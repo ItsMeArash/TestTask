@@ -11,11 +11,11 @@ const validate = (data) => {
 
   // Check username
   if (!data.username) {
-    errors.name = "Username is required";
+    errors.username = "Username is required";
   } else if (!usernameLengthRegex.test(data.username)) {
-    errors.name = "Username must be between 3 and 20 characters";
+    errors.username = "Username must be between 3 and 20 characters";
   } else if (!usernameCharacterRegex.test(data.username)) {
-    errors.name = "Username can only contain letters, numbers, and underscores";
+    errors.username = "Username can only contain letters, numbers, and underscores";
   }
 
   // Check password

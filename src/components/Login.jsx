@@ -1,16 +1,32 @@
 import { useSelector, useDispatch } from "react-redux";
-import { setUsername, setPassword } from "../redux/login/loginAction";
+import {
+  setUsername,
+  setPassword,
+  setLoggedIn,
+} from "../redux/login/loginAction";
 import validate from "../helpers/validator";
+import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 
 const Login = () => {
+const [errors, setErrors] = useState({})
+
   const dispatch = useDispatch();
   const userLogin = useSelector((state) => state.login);
 
+  const navigate = useNavigate();
+
   const submitHandler = (event) => {
     event.preventDefault();
-    if (Object.keys(validate(userLogin)).length === 0) {
+    const errors = validate(userLogin);
+    if (Object.keys(errors).length === 0) {
       localStorage.setItem("userLogin", JSON.stringify(userLogin));
-    } else console.log(validate(userLogin));
+      dispatch(setLoggedIn(true));
+      navigate("/dashboard");
+    } else {
+      console.log(errors);
+      setErrors(errors);
+    }
   };
 
   return (
@@ -30,6 +46,7 @@ const Login = () => {
             name="username"
             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
           />
+          { errors.username && <span className="text-red-500">{ errors.username }</span> }
         </div>
 
         <div className="mb-6">
@@ -46,6 +63,7 @@ const Login = () => {
             name="password"
             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
           />
+          { errors.password && <span className="text-red-500">{ errors.password }</span> }
         </div>
 
         <button

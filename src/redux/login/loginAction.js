@@ -11,3 +11,10 @@ export const setPassword = (password) => {
     payload: password,
   };
 };
+
+export const setLoggedIn = (status) => {
+    return {
+        type: "SET_LOGGEDIN",
+        payload: status
+    }
+}
