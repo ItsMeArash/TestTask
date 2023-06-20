@@ -4,7 +4,7 @@ import {
   setPassword,
   setLoggedIn,
 } from "../redux/login/loginAction";
-import validate from "../helpers/validator";
+import { validate } from "../helpers/functions";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 

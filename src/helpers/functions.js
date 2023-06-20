@@ -1,4 +1,4 @@
-const validate = (data) => {
+export const validate = (data) => {
   const errors = {};
 
   // Patterns
@@ -30,4 +30,11 @@ const validate = (data) => {
   return errors;
 };
 
-export default validate;
+export const fetchQuote = (setQuote) => {
+  fetch("https://api.quotable.io/random")
+      .then((response) => response.json())
+      .then((data) => {
+        setQuote(`${data.content} - ${data.author}`);
+      })
+      .catch((error) => console.log(error));
+}
