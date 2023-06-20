@@ -9,11 +9,9 @@ import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 
 const Login = () => {
-const [errors, setErrors] = useState({})
-
+  const [errors, setErrors] = useState({});
   const dispatch = useDispatch();
   const userLogin = useSelector((state) => state.login);
-
   const navigate = useNavigate();
 
   const submitHandler = (event) => {
@@ -31,8 +29,8 @@ const [errors, setErrors] = useState({})
 
   return (
     <div className="min-h-screen bg-gray-100 flex justify-center items-center">
-      <form className="bg-white p-10 rounded-lg shadow-lg">
-        <div className="mb-6">
+      <form className="bg-white p-4 sm:p-10 rounded-lg shadow-lg w-full max-w-md">
+        <div className="mb-4 sm:mb-6">
           <label
             htmlFor="username"
             className="block text-gray-700 font-bold mb-2"
@@ -46,10 +44,12 @@ const [errors, setErrors] = useState({})
             name="username"
             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
           />
-          { errors.username && <span className="text-red-500">{ errors.username }</span> }
+          {errors.username && (
+            <span className="text-red-500">{errors.username}</span>
+          )}
         </div>
 
-        <div className="mb-6">
+        <div className="mb-4 sm:mb-6">
           <label
             htmlFor="password"
             className="block text-gray-700 font-bold mb-2"
@@ -63,7 +63,9 @@ const [errors, setErrors] = useState({})
             name="password"
             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
           />
-          { errors.password && <span className="text-red-500">{ errors.password }</span> }
+          {errors.password && (
+            <span className="text-red-500">{errors.password}</span>
+          )}
         </div>
 
         <button
