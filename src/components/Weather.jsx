@@ -9,7 +9,7 @@ import { logOut } from "../redux/login/loginAction";
 const Weather = () => {
   const [showMenu, setShowMenu] = useState(false);
   const [weather, setWeather] = useState(null);
-  const [isLoading, setIsLoading] = useState(false); // add a loading state variable
+  const [isLoading, setIsLoading] = useState(false);
 
   const cityInput = useRef(null);
 
@@ -29,28 +29,40 @@ const Weather = () => {
 
   const handleFetchWeather = () => {
     setWeather(null);
-    setIsLoading(true); // set the loading state to true when fetching weather data
+    setIsLoading(true);
     fetchWeatherGPS()
       .then((weather) => {
         setWeather(weather);
       })
       .catch((error) => {
         console.error(error);
+        setIsLoading(false);
+        alert(
+          "Failed to get GPS coordinates. Please enable location permission or try again later."
+        );
       })
       .finally(() => {
-        setIsLoading(false); // set the loading state to false when the data has been fetched
+        setIsLoading(false);
       });
   };
 
   const handleCitySearch = () => {
-    setWeather(null); // reset the weather state
+    setWeather(null);
     const cityName = cityInput.current.value;
     setIsLoading(true);
     const city = cities.find((c) => c.title === cityName);
-    console.log(cityName, city);
+    if (!city) {
+      setIsLoading(false);
+      alert("City not found. Please enter a valid city name.");
+      return;
+    }
     fetchWeather(city)
       .then((weather) => setWeather(weather))
-      .catch((error) => console.error(error))
+      .catch((error) => {
+        console.error(error);
+        alert("Failed to fetch weather data. Please try again later.");
+        setIsLoading(false);
+      })
       .finally(() => setIsLoading(false));
   };
 
@@ -122,7 +134,9 @@ const Weather = () => {
                 dispatch(logOut());
               }}
             >
-              <Link className="text-red-500 hover:text-red-400" to="/">Log Out</Link>
+              <Link className="text-red-500 hover:text-red-400" to="/">
+                Log Out
+              </Link>
             </li>
           </ul>
         </div>
