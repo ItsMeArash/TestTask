@@ -143,7 +143,7 @@ const Weather = () => {
         <div className="flex-1 flex flex-col items-center justify-center">
           <div className="flex justify-center items-center">
             <input
-              className="py-2 px-3 bg-gray-200 rounded-l-lg w-64"
+              className="py-2 shadow-md px-3 bg-gray-200 rounded-l-lg w-64"
               type="text"
               placeholder="Enter city name here"
               list="cities"
@@ -156,14 +156,14 @@ const Weather = () => {
             </datalist>
             <button
               onClick={() => handleCitySearch()}
-              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-r-lg focus:outline-none focus:shadow-outline"
+              className="bg-blue-500 shadow-md hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-r-lg focus:outline-none focus:shadow-outline"
             >
               Search
             </button>
 
             <button
               onClick={handleFetchWeather}
-              className="ml-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+              className="ml-4 shadow-md bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
