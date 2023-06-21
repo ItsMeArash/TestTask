@@ -19,10 +19,16 @@ const loginReducer = (state = initialState, action) => {
       };
 
     case "SET_LOGGEDIN":
-        return {
-            ...state,
-            isLoggedIn: action.payload
-        }
+      return {
+        ...state,
+        isLoggedIn: action.payload,
+      };
+    case "LOG_OUT":
+      return {
+        username: "",
+        password: "",
+        isLoggedIn: false,
+      };
     default:
       return state;
   }

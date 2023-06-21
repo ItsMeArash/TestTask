@@ -13,8 +13,14 @@ export const setPassword = (password) => {
 };
 
 export const setLoggedIn = (status) => {
-    return {
-        type: "SET_LOGGEDIN",
-        payload: status
-    }
-}
+  return {
+    type: "SET_LOGGEDIN",
+    payload: status,
+  };
+};
+
+export const logOut = () => {
+  return {
+    type: "LOG_OUT",
+  };
+};

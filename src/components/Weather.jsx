@@ -1,15 +1,19 @@
-import { useState, useEffect } from "react";
+import cities from "../helpers/cities.json";
+import { useState, useEffect, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { fetchWeatherGPS } from "../helpers/weatherAPI";
-import { useSelector } from "react-redux";
+import { fetchWeatherGPS, fetchWeather } from "../helpers/weatherAPI";
+import { useSelector, useDispatch } from "react-redux";
 import { BounceLoader } from "react-spinners";
+import { logOut } from "../redux/login/loginAction";
 
-
-function Weather() {
+const Weather = () => {
   const [showMenu, setShowMenu] = useState(false);
   const [weather, setWeather] = useState(null);
   const [isLoading, setIsLoading] = useState(false); // add a loading state variable
 
+  const cityInput = useRef(null);
+
+  const dispatch = useDispatch();
   const isLoggedIn = useSelector((state) => state.login.isLoggedIn);
   const navigate = useNavigate();
 
@@ -24,6 +28,7 @@ function Weather() {
   }, [weather]);
 
   const handleFetchWeather = () => {
+    setWeather(null);
     setIsLoading(true); // set the loading state to true when fetching weather data
     fetchWeatherGPS()
       .then((weather) => {
@@ -37,6 +42,18 @@ function Weather() {
       });
   };
 
+  const handleCitySearch = () => {
+    setWeather(null); // reset the weather state
+    const cityName = cityInput.current.value;
+    setIsLoading(true);
+    const city = cities.find((c) => c.title === cityName);
+    console.log(cityName, city);
+    fetchWeather(city)
+      .then((weather) => setWeather(weather))
+      .catch((error) => console.error(error))
+      .finally(() => setIsLoading(false));
+  };
+
   const override = {
     display: "block",
     margin: "0 auto",
@@ -46,10 +63,10 @@ function Weather() {
   return (
     <div>
       <div className="flex flex-col h-screen bg-gray-100">
-        <div className="bg-gray-800 text-gray-100 flex items-center justify-between p-4 md:p-8">
-          <Link to="/weather/#">
+        <div className="bg-gray-800 text-gray-100 flex items-center justify-between p-4 md:p-6">
+          <Link to="/weather">
             <h1
-              className={`text-2xl md:text-4xl font-bold ${
+              className={`text-2xl md:text-3xl font-bold ${
                 location.pathname === "/weather"
                   ? "border-b-4 border-blue-500"
                   : "text-blue-500"
@@ -89,7 +106,7 @@ function Weather() {
           <ul
             className={`${
               showMenu ? "flex" : "hidden"
-            } md:flex space-x-4 md:space-x-8`}
+            } md:flex space-x-4 md:space-x-8 font-bold`}
           >
             <li className="text-gray-300 hover:text-white">
               <Link to="/dashboard">Dashboard</Link>
@@ -100,6 +117,13 @@ function Weather() {
             <li className="text-gray-300 hover:text-white">
               <Link to="/todo">To-Do</Link>
             </li>
+            <li
+              onClick={() => {
+                dispatch(logOut());
+              }}
+            >
+              <Link className="text-red-500 hover:text-red-400" to="/">Log Out</Link>
+            </li>
           </ul>
         </div>
         <div className="flex-1 flex flex-col items-center justify-center">
@@ -108,8 +132,18 @@ function Weather() {
               className="py-2 px-3 bg-gray-200 rounded-l-lg w-64"
               type="text"
               placeholder="Enter city name here"
+              list="cities"
+              ref={cityInput}
             />
-            <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-r-lg focus:outline-none focus:shadow-outline">
+            <datalist id="cities">
+              {cities.map((city) => (
+                <option key={city.id} value={city.title} />
+              ))}
+            </datalist>
+            <button
+              onClick={() => handleCitySearch()}
+              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-r-lg focus:outline-none focus:shadow-outline"
+            >
               Search
             </button>
 
@@ -139,7 +173,12 @@ function Weather() {
             </button>
           </div>
           {isLoading && (
-           <BounceLoader className="mt-16" css={override} color={"#123abc"} loading={isLoading} />
+            <BounceLoader
+              className="mt-16"
+              css={override}
+              color={"#123abc"}
+              loading={isLoading}
+            />
           )}
           {weather && !isLoading && (
             <div className="mt-16 rounded-lg shadow-md bg-white p-4 flex flex-col items-center">
@@ -161,6 +200,6 @@ function Weather() {
       </div>
     </div>
   );
-}
+};
 
 export default Weather;
