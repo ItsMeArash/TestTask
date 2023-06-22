@@ -25,10 +25,7 @@ const Todo = () => {
     setTasks(storedTasks);
   }, []);
 
-  // Save tasks to local storage on update
-  useEffect(() => {
-    localStorage.setItem("tasks", JSON.stringify(tasks));
-  }, [tasks]);
+ 
 
   // Handle form submit to add new task
   const handleAddTask = (event) => {
@@ -70,7 +67,7 @@ const Todo = () => {
   });
 
   return (
-    <div>
+    <div className="dark:bg-gray-800 dark:text-gray-100 h-screen">
       <div className="bg-gray-800 text-gray-100 flex items-center justify-between p-4 md:p-6">
         <Link to="/todo">
           <h1
@@ -139,89 +136,99 @@ const Todo = () => {
           </li>
         </ul>
       </div>
-      <div className="max-w-md mx-auto mt-8 bg-white rounded-lg shadow-lg">
-  <form onSubmit={handleAddTask} className="flex items-center px-4 py-2 border-b border-gray-300">
-    <input
-      type="text"
-      placeholder="Add a new task"
-      value={newTask}
-      onChange={(event) => setNewTask(event.target.value)}
-      className="flex-grow px-2 py-1 mr-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-    />
-    <button
-      type="submit"
-      className="px-4 py-1 text-white bg-blue-500 rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400"
-    >
-      Add
-    </button>
-  </form>
-  <div className="px-4 py-2 border-b border-gray-300">
-    <label htmlFor="filter" className="mr-2 font-medium">
-      Filter:
-    </label>
-    <select
-      id="filter"
-      value={filter}
-      onChange={(event) => setFilter(event.target.value)}
-      className="px-2 py-1 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-    >
-      <option value="all">All</option>
-      <option value="active">Active</option>
-      <option value="completed">Completed</option>
-    </select>
-  </div>
-  <ul className="px-4 py-2">
-    {filteredTasks.map((task) => (
-      <li
-        key={task.id}
-        className="flex items-center justify-between py-1 border-b border-gray-300 last:border-b-0"
-      >
-        {task.completed ? (
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="h-5 w-5 text-green-500 mr-2"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M5 13l4 4L19 7"
-            />
-          </svg>
-        ) : (
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="h-5 w-5 text-gray-300 mr-2 cursor-pointer"
-            viewBox="0 0 20 20"
-            fill="none"
-            stroke="currentColor"
-            onClick={() => handleToggleCompleted(task.id)}
-          >
-            <circle cx="10" cy="10" r="9" strokeWidth="2" />
-            <path strokeLinecap="round" strokeWidth="2" d="M6 10l3 3 6-6" />
-          </svg>
-        )}
-        <span
-          className={`flex-grow cursor-pointer ${
-            task.completed ? "line-through text-gray-400" : ""
-          }`}
-          onClick={() => handleToggleCompleted(task.id)}
+      <div className="max-w-md mx-auto mt-8 bg-white dark:bg-gray-800 rounded-lg shadow-lg">
+        <form
+          onSubmit={handleAddTask}
+          className="flex items-center px-4 py-2 border-b border-gray-300"
         >
-          {task.text}
-        </span>
-        <button
-          className="px-2 py-1 text-red-500 rounded-lg hover:text-red-400 focus:outline-none focus:ring-2 focus:ring-blue-400"
-          onClick={() => handleDeleteTask(task.id)}
-        >
-          Delete
-        </button>
-      </li>
-    ))}
-  </ul>
-</div>
+          <input
+            type="text"
+            placeholder="Add a new task"
+            value={newTask}
+            onChange={(event) => setNewTask(event.target.value)}
+            className="flex-grow px-2 py-1 mr-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+          />
+          <button
+            type="submit"
+            className="px-4 py-1 text-white bg-blue-500 rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400"
+            onClick={event => handleAddTask(event)}
+          >
+            Add
+          </button>
+        </form>
+        <div className="px-4 py-2 border-b border-gray-300">
+          <label htmlFor="filter" className="mr-2 font-medium">
+            Filter:
+          </label>
+          <select
+            id="filter"
+            value={filter}
+            onChange={(event) => setFilter(event.target.value)}
+            className="px-2 py-1 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+          >
+            <option value="all">All</option>
+            <option value="active">Active</option>
+            <option value="completed">Completed</option>
+          </select>
+        </div>
+        <ul className="px-4 py-2">
+          {filteredTasks.map((task) => (
+            <li
+              key={task.id}
+              className="flex items-center justify-between py-1 border-b border-gray-300 last:border-b-0"
+            >
+              {task.completed ? (
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-5 w-5 text-green-500 mr-2"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M5 13l4 4L19 7"
+                  />
+                </svg>
+              ) : (
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-5 w-5 text-gray-300 dark:text-gray-500 mr-2 cursor-pointer"
+                  viewBox="0 0 20 20"
+                  fill="none"
+                  stroke="currentColor"
+                  onClick={() => handleToggleCompleted(task.id)}
+                >
+                  <circle cx="10" cy="10" r="9" strokeWidth="2" />
+                  <path
+                    strokeLinecap="round"
+                    strokeWidth="2"
+                    d="M6 10l3 3 6-6"
+                  />
+                </svg>
+              )}
+              <span
+                className={`flex-grow cursor-pointer ${
+                  task.completed
+                    ? "line-through text-gray-400 dark:text-gray-500"
+                    : ""
+                }`}
+                onClick={() => handleToggleCompleted(task.id)}
+              >
+                {task.text}
+              </span>
+              <button
+                className="px-2 py-1 text-red-500 dark:text-red-400 rounded-lg hover:text-red-400 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                onClick={() => handleDeleteTask(task.id)}
+              >
+                Delete
+              </button>
+            </li>
+          ))}
+        </ul>
+      </div>
     </div>
   );
 };

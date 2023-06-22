@@ -45,7 +45,7 @@ const Dashboard = () => {
   }
 
   return (
-    <div className="flex flex-col h-screen bg-gray-100">
+    <div className="flex flex-col h-screen bg-gray-100 dark:bg-gray-800">
       <div className="bg-gray-800 text-gray-100 flex items-center justify-between p-4 md:p-6">
         <Link to="/dashboard">
           <h1
@@ -102,6 +102,7 @@ const Dashboard = () => {
           </li>
           <li
               onClick={() => {
+                localStorage.removeItem("userLogin");
                 dispatch(logOut());
               }}
             >
@@ -110,15 +111,15 @@ const Dashboard = () => {
         </ul>
       </div>
       <div className="flex-1 flex flex-col items-center justify-center">
-        <h2 className="text-4xl md:text-6xl font-bold mb-2 text-gray-800">
+        <h2 className="text-4xl md:text-6xl font-bold mb-2 text-gray-800 dark:text-gray-100">
           {format(currentTime, "h:mm:ss a")}
         </h2>
-        <h1 className="text-2xl md:text-3xl font-bold mb-32 text-gray-800">
+        <h1 className="text-2xl md:text-3xl font-bold mb-32 text-gray-800 dark:text-gray-100">
           Good {timeOfDay}, <span className="text-blue-500">{username}</span>!
         </h1>
-        <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-md">
-          <p className="text-lg md:text-xl text-gray-800 mb-4">Random Quote:</p>
-          <blockquote className="text-base md:text-lg italic text-gray-500">
+        <div className="bg-white dark:bg-gray-700 rounded-lg shadow-lg p-6 w-full max-w-md">
+          <p className="text-lg md:text-xl text-gray-800 dark:text-gray-100 mb-4">Random Quote:</p>
+          <blockquote className="text-base md:text-lg italic text-gray-500 dark:text-gray-300">
             {quote}
           </blockquote>
         </div>

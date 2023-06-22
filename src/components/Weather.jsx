@@ -74,7 +74,7 @@ const Weather = () => {
 
   return (
     <div>
-      <div className="flex flex-col h-screen bg-gray-100">
+      <div className="flex flex-col h-screen bg-gray-100 dark:bg-gray-800">
         <div className="bg-gray-800 text-gray-100 flex items-center justify-between p-4 md:p-6">
           <Link to="/weather">
             <h1
