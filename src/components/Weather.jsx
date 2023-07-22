@@ -1,31 +1,25 @@
 import cities from "../helpers/cities.json";
 import { useState, useEffect, useRef } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { fetchWeatherGPS, fetchWeather } from "../helpers/weatherAPI";
-import { useSelector, useDispatch } from "react-redux";
 import { BounceLoader } from "react-spinners";
-import { logOut } from "../redux/login/loginAction";
+import Navbar from "./Navbar"
 
 const Weather = () => {
-  const [showMenu, setShowMenu] = useState(false);
   const [weather, setWeather] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
 
   const cityInput = useRef(null);
 
-  const dispatch = useDispatch();
-  const isLoggedIn = useSelector((state) => state.login.isLoggedIn);
+  const isLoggedIn = JSON.parse(localStorage.getItem("userLogin")).isLoggedIn
   const navigate = useNavigate();
 
   useEffect(() => {
     if (!isLoggedIn) {
       navigate("/");
     }
-  }, [isLoggedIn, navigate]);
-
-  useEffect(() => {
-    console.log(weather);
-  }, [weather]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isLoggedIn]);
 
   const handleFetchWeather = () => {
     setWeather(null);
@@ -75,71 +69,7 @@ const Weather = () => {
   return (
     <div>
       <div className="flex flex-col h-screen bg-gray-100 dark:bg-gray-800">
-        <div className="bg-gray-800 text-gray-100 flex items-center justify-between p-4 md:p-6">
-          <Link to="/weather">
-            <h1
-              className={`text-2xl md:text-3xl font-bold ${
-                location.pathname === "/weather"
-                  ? "border-b-4 border-blue-500"
-                  : "text-blue-500"
-              } pb-2`}
-            >
-              Weather
-            </h1>
-          </Link>
-          <button
-            className="md:hidden focus:outline-none"
-            onClick={() => setShowMenu(!showMenu)}
-          >
-            <svg
-              className="w-6 h-6 text-gray-300 hover:text-white"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              {showMenu ? (
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M6 18L18 6M6 6l12 12"
-                />
-              ) : (
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M4 6h16M4 12h16M4 18h16"
-                />
-              )}
-            </svg>
-          </button>
-          <ul
-            className={`${
-              showMenu ? "flex" : "hidden"
-            } md:flex space-x-4 md:space-x-8 font-bold`}
-          >
-            <li className="text-gray-300 hover:text-white">
-              <Link to="/dashboard">Dashboard</Link>
-            </li>
-            <li className="text-gray-300 hover:text-white">
-              <Link to="/profile">Profile</Link>
-            </li>
-            <li className="text-gray-300 hover:text-white">
-              <Link to="/todo">To-Do</Link>
-            </li>
-            <li
-              onClick={() => {
-                dispatch(logOut());
-              }}
-            >
-              <Link className="text-red-500 hover:text-red-400" to="/">
-                Log Out
-              </Link>
-            </li>
-          </ul>
-        </div>
+        <Navbar />
         <div className="flex-1 flex flex-col items-center justify-center">
           <div className="flex justify-center items-center">
             <input

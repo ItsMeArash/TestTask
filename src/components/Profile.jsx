@@ -1,5 +1,4 @@
 import { Link, useNavigate } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
 import { logOut } from "../redux/login/loginAction";
 import { useState, useEffect, useRef } from "react";
 import { setUsername } from "../redux/login/loginAction";
