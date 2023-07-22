@@ -1,49 +1,49 @@
-import { useSelector, useDispatch } from "react-redux";
-import {
-  setUsername,
-  setPassword,
-  setLoggedIn,
-} from "../redux/login/loginAction";
 import { validate } from "../helpers/functions";
 import { useNavigate } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 
-const Login = () => {
+// eslint-disable-next-line react/prop-types
+const Login = ({ useStore }) => {
   const [errors, setErrors] = useState({});
-  const dispatch = useDispatch();
-  const userLogin = useSelector((state) => state.login);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    if (localStorage.getItem("userLogin")) {
-      localStorage.removeItem("userLogin");
-      console.log("initial local storage clearence");
-      dispatch(setLoggedIn(false));
-      dispatch(setUsername(""));
-      dispatch(setPassword(""));
-    }
-  }, [dispatch]);
-
-  useEffect(() => {
-    const storedUserLogin = JSON.parse(localStorage.getItem("userLogin"));
-    if (storedUserLogin) {
-      dispatch(setUsername(storedUserLogin.username));
-      dispatch(setPassword(storedUserLogin.password));
-      dispatch(setLoggedIn(true));
-    }
-  }, [dispatch]);
+  const {
+    username,
+    password,
+    isLoggedIn,
+    setUsername,
+    setPassword,
+    setIsLoggedIn,
+  } = useStore();
+  const userLogin = {
+    username,
+    password,
+    isLoggedIn,
+    setUsername,
+    setPassword,
+    setIsLoggedIn,
+  };
 
   const submitHandler = (event) => {
     event.preventDefault();
     const errors = validate(userLogin);
     if (Object.keys(errors).length === 0) {
-      dispatch(setLoggedIn(true));
-      localStorage.setItem("userLogin", JSON.stringify(userLogin));
-      navigate("/dashboard");
+      setIsLoggedIn(true);
+      setTimeout(() => {
+        navigate("/dashboard");
+      }, 500)
     } else {
       setErrors(errors);
     }
   };
+
+  useEffect(() => {
+    localStorage.setItem(
+      "userLogin",
+      JSON.stringify({ username, password, isLoggedIn })
+    );
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isLoggedIn]);
 
   return (
     <div className="min-h-screen bg-gray-100 dark:bg-gray-800 flex justify-center items-center">
@@ -57,7 +57,7 @@ const Login = () => {
           </label>
           <input
             value={userLogin.username}
-            onChange={(event) => dispatch(setUsername(event.target.value))}
+            onChange={(event) => setUsername(event.target.value)}
             type="text"
             name="username"
             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 dark:text-gray-300 leading-tight focus:outline-none focus:shadow-outline"
@@ -76,7 +76,7 @@ const Login = () => {
           </label>
           <input
             value={userLogin.password}
-            onChange={(event) => dispatch(setPassword(event.target.value))}
+            onChange={(event) => setPassword(event.target.value)}
             type="password"
             name="password"
             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 dark:text-gray-300 leading-tight focus:outline-none focus:shadow-outline"

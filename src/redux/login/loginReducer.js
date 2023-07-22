@@ -2,6 +2,9 @@ const initialState = {
   username: "",
   password: "",
   isLoggedIn: false,
+  // isLoggedIn: localStorage.getItem("userLogin")
+  //   ? JSON.parse(localStorage.getItem("userLogin")).isLoggedIn
+  //   : false,
 };
 
 const loginReducer = (state = initialState, action) => {

@@ -1,18 +1,23 @@
-import { useSelector, useDispatch } from "react-redux";
 import { useState, useEffect } from "react";
 import { format } from "date-fns";
 import { useNavigate, Link, useLocation } from "react-router-dom";
 import { fetchQuote } from "../helpers/functions";
-import { logOut } from "../redux/login/loginAction";
 
+// eslint-disable-next-line react/prop-types
 const Dashboard = () => {
   const [currentTime, setCurrentTime] = useState(new Date());
   const [quote, setQuote] = useState("");
   const [showMenu, setShowMenu] = useState(false);
-
-  const dispatch = useDispatch();
-  const username = useSelector((state) => state.login.username);
-  const isLoggedIn = useSelector((state) => state.login.isLoggedIn);
+  // const { username, logOut } = useStore();
+  const username = JSON.parse(localStorage.getItem("userLogin")).username;
+  const isLoggedIn = JSON.parse(localStorage.getItem("userLogin")).isLoggedIn;
+  const logOut = () => {
+    localStorage.setItem("userLogin", JSON.stringify({
+      username: '',
+      password: '',
+      isLoggedIn: false,
+    }))
+  }
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -21,7 +26,8 @@ const Dashboard = () => {
     if (!isLoggedIn) {
       navigate("/");
     }
-  }, [isLoggedIn, navigate]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isLoggedIn]);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -46,7 +52,7 @@ const Dashboard = () => {
 
   return (
     <div className="flex flex-col h-screen bg-gray-100 dark:bg-gray-800">
-      <div className="bg-gray-800 text-gray-100 flex items-center justify-between p-4 md:p-6">
+      <div className="bg-gray-800 text-gray-100 box-shadow-lg flex items-center justify-between p-4 md:p-6">
         <Link to="/dashboard">
           <h1
             className={`text-2xl md:text-3xl font-bold ${
@@ -101,14 +107,17 @@ const Dashboard = () => {
             <Link to="/weather">Weather</Link>
           </li>
           <li
-              onClick={() => {
-                localStorage.removeItem("userLogin");
-                dispatch(logOut());
-              }}
-            >
-              <Link className="text-red-500 hover:text-red-400" to="/">Log Out</Link>
-            </li>
+            onClick={() => {
+              localStorage.removeItem("userLogin");
+              logOut();
+            }}
+          >
+            <Link className="text-red-500 hover:text-red-400" to="/">
+              Log Out
+            </Link>
+          </li>
         </ul>
+        
       </div>
       <div className="flex-1 flex flex-col items-center justify-center">
         <h2 className="text-4xl md:text-6xl font-bold mb-2 text-gray-800 dark:text-gray-100">
@@ -118,7 +127,9 @@ const Dashboard = () => {
           Good {timeOfDay}, <span className="text-blue-500">{username}</span>!
         </h1>
         <div className="bg-white dark:bg-gray-700 rounded-lg shadow-lg p-6 w-full max-w-md">
-          <p className="text-lg md:text-xl text-gray-800 dark:text-gray-100 mb-4">Random Quote:</p>
+          <p className="text-lg md:text-xl text-gray-800 dark:text-gray-100 mb-4">
+            Random Quote:
+          </p>
           <blockquote className="text-base md:text-lg italic text-gray-500 dark:text-gray-300">
             {quote}
           </blockquote>

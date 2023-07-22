@@ -1,6 +1,6 @@
 import { Route, Routes } from "react-router-dom";
-import store from "./redux/store";
-import { Provider } from "react-redux";
+
+import { create } from "zustand";
 
 // Components
 import Login from "./components/Login";
@@ -10,19 +10,27 @@ import ToDo from "./components/ToDo";
 import Profile from "./components/Profile";
 import NotFound from "./components/NotFound";
 
+const useStore = create((set) => ({
+  username: "",
+  password: "",
+  isLoggedIn: false,
+  setUsername: (username) => set(() => ({ username: username })),
+  setPassword: (password) => set(() => ({ password: password })),
+  setIsLoggedIn: (isLoggedIn) => set(() => ({ isLoggedIn: isLoggedIn })),
+  logOut: () => set(() => ({ username: '', password: '', isLoggedIn: false}))
+}));
+
 const App = () => {
   return (
     <div className="dark:bg-slate-600">
-      <Provider store={store}>
-        <Routes>
-          <Route path="/" element={<Login />} />
-          <Route path="/dashboard" element={<Dashborad />} />
-          <Route path="/weather" element={<Weather />} />
-          <Route path="/todo" element={<ToDo />} />
-          <Route path="/profile" element={<Profile />} />
-          <Route path="/*" element={<NotFound />} />
-        </Routes>
-      </Provider>
+      <Routes>
+        <Route path="/" element={<Login useStore={useStore} />} />
+        <Route path="/dashboard" element={<Dashborad useStore={useStore} />} />
+        <Route path="/weather" element={<Weather useStore={useStore} />} />
+        <Route path="/todo" element={<ToDo useStore={useStore} />} />
+        <Route path="/profile" element={<Profile useStore={useStore} />} />
+        <Route path="/*" element={<NotFound />} />
+      </Routes>
     </div>
   );
 };
