@@ -74,7 +74,7 @@ const Navbar = () => {
           <li className={`text-gray-300 hover:text-white ${location.pathname === "/weather" && "hidden"}`}>
             <Link to="/weather">Weather</Link>
           </li>
-          <li className={`text-gray-300 hover:text-white ${location.pathname === "/todo2" && "hidden"}`}>
+          <li className={`text-gray-300 hover:text-white ${location.pathname === "/todo" && "hidden"}`}>
             <Link to="/todo">To-Do</Link>
           </li>
           <li className={`text-gray-300 hover:text-white ${location.pathname === "/profile" && "hidden"}`}>
