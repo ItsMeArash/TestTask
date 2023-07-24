@@ -43,7 +43,7 @@ const Profile = ({ useStore }) => {
     <div className="dark:bg-gray-800">
       <Navbar />
       <div className="flex flex-col h-screen justify-center items-center px-4">
-        <form className="bg-white dark:bg-slate-600  p-6 rounded-lg shadow-md max-w-lg w-full">
+        <form className="bg-white dark:bg-gray-700  p-6 rounded-lg shadow-md max-w-lg w-full">
           <div className="mb-4">
             <label
               htmlFor="username"
