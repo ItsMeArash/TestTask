@@ -1,30 +1,27 @@
 import { useState, useEffect } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
-import { logOut } from "../redux/login/loginAction";
+import { useNavigate } from "react-router-dom";
+import Navbar from "./Navbar";
 
 const Todo = () => {
-  const location = useLocation();
   const [tasks, setTasks] = useState([]);
   const [newTask, setNewTask] = useState("");
   const [filter, setFilter] = useState("all");
-  const [showMenu, setShowMenu] = useState(false);
-  const dispatch = useDispatch();
-  const isLoggedIn = useSelector((state) => state.login.isLoggedIn);
+
+  const isLoggedIn = JSON.parse(localStorage.getItem("userLogin")).isLoggedIn;
   const navigate = useNavigate();
 
   useEffect(() => {
     if (!isLoggedIn) {
       navigate("/");
     }
-  }, [isLoggedIn, navigate]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isLoggedIn]);
 
   // Load tasks from local storage on mount
   useEffect(() => {
     const storedTasks = JSON.parse(localStorage.getItem("tasks")) || [];
     setTasks(storedTasks);
   }, []);
-
- 
 
   // Handle form submit to add new task
   const handleAddTask = (event) => {
@@ -67,74 +64,7 @@ const Todo = () => {
 
   return (
     <div className="dark:bg-gray-800 dark:text-gray-100 h-screen">
-      <div className="bg-gray-800 text-gray-100 flex items-center justify-between p-4 md:p-6">
-        <Link to="/todo">
-          <h1
-            className={`text-2xl md:text-3xl font-bold ${
-              location.pathname === "/todo"
-                ? "border-b-4 border-blue-500"
-                : "text-blue-500"
-            } pb-2`}
-          >
-            To-Do List
-          </h1>
-        </Link>
-        <button
-          className="md:hidden focus:outline-none"
-          onClick={() => setShowMenu(!showMenu)}
-        >
-          <svg
-            className="w-6 h-6 text-gray-300 hover:text-white"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            {showMenu ? (
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M6 18L18 6M6 6l12 12"
-              />
-            ) : (
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M4 6h16M4 12h16M4 18h16"
-              />
-            )}
-          </svg>
-        </button>
-        <ul
-          className={`${
-            showMenu ? "flex" : "hidden"
-          } md:flex space-x-4 md:space-x-8 font-bold`}
-        >
-          <li className="text-gray-300 hover:text-white">
-            <Link to="/profile">Profile</Link>
-          </li>
-          <li className="text-gray-300 hover:text-white">
-            <Link to="/dashboard">Dashboard</Link>
-          </li>
-          <li className="text-gray-300 hover:text-white">
-            <Link to="/weather">Weather</Link>
-          </li>
-          <li
-            onClick={() => {
-              dispatch(logOut());
-            }}
-          >
-            <Link
-              className="text-red-500 hover:text-red-400"
-              to="/"
-            >
-              Log Out
-            </Link>
-          </li>
-        </ul>
-      </div>
+      <Navbar />
       <div className="max-w-md mx-auto mt-8 bg-white dark:bg-gray-800 rounded-lg shadow-lg">
         <form
           onSubmit={handleAddTask}
@@ -150,7 +80,7 @@ const Todo = () => {
           <button
             type="submit"
             className="px-4 py-1 text-white bg-blue-500 rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400"
-            onClick={event => handleAddTask(event)}
+            onClick={(event) => handleAddTask(event)}
           >
             Add
           </button>
