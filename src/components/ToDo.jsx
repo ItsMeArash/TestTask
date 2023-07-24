@@ -65,7 +65,7 @@ const Todo = () => {
   return (
     <div className="dark:bg-gray-800 dark:text-gray-100 h-screen">
       <Navbar />
-      <div className="max-w-md mx-auto mt-8 bg-white dark:bg-gray-800 rounded-lg shadow-lg">
+      <div className="max-w-md mx-auto mt-8 p-4 bg-white dark:bg-gray-300 dark:text-black rounded-lg shadow-lg">
         <form
           onSubmit={handleAddTask}
           className="flex items-center px-4 py-2 border-b border-gray-300"
